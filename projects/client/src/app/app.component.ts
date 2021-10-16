@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  users: any = null;
+  users: any[] = [];
   private subscription: Subscription = Subscription.EMPTY;
 
   constructor(private httpClient: HttpClient) { }
@@ -23,6 +23,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  onClick(event: Event): void {
+    this.subscription.unsubscribe();
+    this.subscription = this.httpClient.post<any[]>('/api/add',
+      {
+        name: `new ${new Date().toLocaleTimeString()}`,
+        password: "new password",
+        profession: "unknown",
+        id: 0
+      })
+      .subscribe(users => {
+        console.log(users);
+        this.users = users;
+      });
   }
 
 }
