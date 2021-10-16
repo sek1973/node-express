@@ -1,9 +1,10 @@
 var express = require('express');
 var app = express();
 var fs = require("fs");
+app.use(express.json());
 
 app.get('/api', (req, res) => {
-  res.send('Hello World!');
+  res.send('Welcome to users application!');
 });
 
 app.get('/api/users', function (req, res) {
@@ -14,7 +15,6 @@ app.get('/api/users', function (req, res) {
 });
 
 app.get('/api/:id', function (req, res) {
-  // First read existing users.
   fs.readFile(__dirname + "/" + "users.json", 'utf8', function (err, data) {
     var users = JSON.parse(data);
     var user = users["user" + req.params.id];
@@ -24,7 +24,7 @@ app.get('/api/:id', function (req, res) {
 });
 
 app.get('/api/test', function (req, res) {
-  res.send("test");
+  res.send("This is a test message from the app...");
 });
 
 var server = app.listen(3000, function () {
@@ -34,11 +34,13 @@ var server = app.listen(3000, function () {
 })
 
 app.post('/api/add', function (req, res) {
-  // First read existing users.
   fs.readFile(__dirname + "/" + "users.json", 'utf8', function (err, data) {
     data = JSON.parse(data);
-    data["user4"] = user["user4"];
-    console.log(data);
+    var usr = req.body;
+    usr.id = data.length + 1;
+    console.log('body:', usr);
+    data.push(usr);
+    console.log('data:', data);
     res.json(data);
   });
 });
