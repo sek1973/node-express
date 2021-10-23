@@ -14,11 +14,12 @@ app.get('/api/users', function (req, res) {
   });
 });
 
-app.get('/api/:id', function (req, res) {
+app.get('/api/users/:id', function (req, res) {
   fs.readFile(__dirname + "/" + "users.json", 'utf8', function (err, data) {
     var users = JSON.parse(data);
-    var user = users["user" + req.params.id];
-    console.log(user);
+    var id = req.params.id;
+    var user = users.find(u => u.id == id);
+    console.log(users, id, user);
     res.send(JSON.stringify(user));
   });
 });
