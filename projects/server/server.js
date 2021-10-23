@@ -45,3 +45,14 @@ app.post('/api/add', function (req, res) {
     res.json(data);
   });
 });
+
+app.delete('/api/users/:id', function (req, res) {
+  fs.readFile(__dirname + "/" + "users.json", 'utf8', function (err, data) {
+    users = JSON.parse(data);
+    var id = req.params.id;
+    var idx = users.findIndex(u => u.id == id);
+    var removed = users.splice(idx, 1);
+    console.log(users, 'removed:', removed);
+    res.json(removed);
+  });
+});
